@@ -261,17 +261,7 @@ class NCL:
             # print()
             self.rmse_array[iteration] = rmse(f_bar, y)
 
-        for i in range(len(self.base_learner)):
-            weights.append(self.base_learner[i].input_weight)
-            weights.append(self.base_learner[i].output_weight)
-            weights.append(self.base_learner[i].bias_input_layer)
-            weights.append(self.base_learner[i].bias_output_layer)
 
-        MyFile=open('weights.txt', 'w+')
-        for element in weights:
-            MyFile.write(str(element))
-            MyFile.write('\n')
-        MyFile.close()
         
     def predict(self, x):
         """
