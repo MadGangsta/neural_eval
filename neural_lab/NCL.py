@@ -11,12 +11,6 @@ from activation import fun_dict
 
 
 def test():
-    """
-    Testing Negative Correlation Learning algorithm.
-    :param X: dataset with features.
-    :param y: targets.
-    :return:
-    """
     # Parameters
     max_iter = 500
     size = 10
@@ -50,10 +44,6 @@ def test():
     plt.show()
 
 def load_dataset():
-    """
-    Load data from Boston housing regression.
-    :return: data scaled and target.
-    """
     X, y = datasets.load_boston(return_X_y=True)
     y = y.reshape((len(y), 1))
     X_scaled = preprocessing.scale(X)
@@ -61,20 +51,10 @@ def load_dataset():
 
 
 def rmse(a, b):
-    """
-    Root Mean Squared Error metric.
-    :param a:
-    :param b:
-    :return: RMSE value
-    """
-
     return sqrt(mean_squared_error(a, b))  # #np.linalg.norm(a - b) / np.sqrt(len(b))
 
 
 class NeuralNetwork:
-    """
-    Neural Network.
-    """
     dim: int  # Dimension of the data (features)
     t: int  # Dimension of the target (labels)
     max_iter: int  # Number of iterations
@@ -92,31 +72,19 @@ class NeuralNetwork:
     activation_der = None
 
     def __init__(self, seed=None):
-        """
-        Fix the random number generator.
-        """
         np.random.seed(seed)
 
     def get_layers(self):
-        """
-        Feed forward random assignation of the two layers.
-        """
         self.get_input_layer()
         self.get_output_layer()
 
     def get_input_layer(self):
-        """
-        Weights and bias for the hidden layer.
-        """
         self.input_weight = np.random.random((self.dim,
                                               self.neurons)) * 2.0 - 1.0
         # self.bias_input_layer = np.random.random((self.neurons, 1))
         self.bias_input_layer = np.zeros((self.neurons, 1))
 
     def get_output_layer(self):
-        """
-        Weight and bias for the output layer.
-        """
         self.output_weight = np.random.random((self.neurons, 1)) * 2.0 - 1.0
         # self.bias_output_layer = np.random.random((self.t, 1))
         self.bias_output_layer = np.zeros((self.t, 1))
@@ -126,15 +94,6 @@ class NeuralNetwork:
                 neurons,
                 learning_rate,
                 neuronal_fun):
-        """
-        Initialize the neural network layers.
-        :param x: numpy.array with data (intances and features).
-        :param y: numpy.array with the target to predict.
-        :param int max_iter: number of iterations for training.
-        :param int neurons: number of neurons in the hidden layer.
-        :param float learning_rate: step to add in each iteration.
-        :param str neuronal_fun: function for activation functions in neurons.
-        """
         self.dim = x.shape[1]
         self.t = y.shape[1]
         self.max_iter = max_iter
@@ -150,15 +109,6 @@ class NeuralNetwork:
               neurons: int = 10,
               learning_rate: float = 1.0,
               neuronal_fun='sigmoid'):
-        """
-        Train the neural network with gradient descent.
-        :param x: numpy.array with data (intances and features).
-        :param y: numpy.array with the target to predict.
-        :param int max_iter: number of iterations for training.
-        :param int neurons: number of neurons in the hidden layer.
-        :param float learning_rate: step to add in each iteration.
-        :param str neuronal_fun: function for activation functions in neurons.
-        """
         self.initial(x=x,
                      y=y,
                      max_iter=max_iter,
@@ -171,13 +121,6 @@ class NeuralNetwork:
             self.backward(x, y)
 
     def backward(self, x, y, penalty):
-        """
-        Back propagation formula with a penalty.
-        :param x:
-        :param y:
-        :param penalty:
-        :return:
-        """
         hidden_layer, output_layer = self.forward(x)
         error = output_layer - y
         # print('Error =', np.linalg.norm(error), ', NC penalty =', np.linalg.norm(penalty))
@@ -196,11 +139,6 @@ class NeuralNetwork:
         self.input_weight -= self.learning_rate * np.dot(x.T, hidden_delta)
 
     def forward(self, x_test):
-        """
-        Output of predict y value for x test.
-        :param x_test:
-        :return:
-        """
         self.temp_h = np.dot(x_test, self.input_weight) + self.bias_input_layer.T
         hidden_layer = self.activation(self.temp_h)
         self.temp_o = np.dot(hidden_layer, self.output_weight) + self.bias_output_layer.T
@@ -213,9 +151,6 @@ class NeuralNetwork:
 
 
 class NCL:
-    """
-    Negative Correlation Learning ensemble.
-    """
     size: int
     max_iter: int
     lambda_: float
@@ -224,17 +159,6 @@ class NCL:
     rmse_array: np.array
 
     def train(self, x, y, size, neurons, max_iter, lambda_, learning_rate, neural_fun='sigmoid'):
-        """
-        Training ensemble
-        :param x: data.
-        :param y: target.
-        :param size: number of base learners.
-        :param neurons:
-        :param max_iter:
-        :param lambda_:
-        :param learning_rate:
-        :param str neural_fun:
-        """
         # Parameter
         self.size = size
         self.max_iter = max_iter
@@ -274,10 +198,6 @@ class NCL:
         MyFile.close()
         
     def predict(self, x):
-        """
-        :param x:
-        :return: f_bar
-        """
         f_bar = np.mean([self.base_learner[s].predict(x) for s in range(self.size)],
                         axis=0)
         return f_bar
