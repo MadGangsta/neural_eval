@@ -1,1 +1,1 @@
-# neural_eval
+# NeuroEvoComputing-lab
