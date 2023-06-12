@@ -14,7 +14,7 @@ Project was made within course of Neuroevolutionary Computing in Tomsk Polytechn
 - Visualisation of training results (metrics, model architecture, best model so far and etc.)
 </br>
 
-### ESP-Algorithm
+### Negotive correlation learning
 ---
 A method related to training an ensemble of ANNs in such a way that their outputs correlate as little as possible.
 Used algorithm can be found in [this paper](https://www.cs.bham.ac.uk/~pxt/NC/ncl.pdf).
